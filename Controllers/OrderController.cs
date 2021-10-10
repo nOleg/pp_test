@@ -43,16 +43,20 @@ namespace pp_test.Controllers
                 throw new Exception("Кол-во товаров не должно превышать 10.");
             }
             
-            var ord= Task.Run<Order>(()=>{
+            return Task.Run<Order>(()=>{
             try{
             db.Orders.Add(order);
             db.SaveChanges();
             }catch(Microsoft.EntityFrameworkCore.DbUpdateException ex){
                 throw new Exception($"Отсутствуе номер ПОСТАМАТА {order.PostamaNum}",ex);
             }
-            return db.Orders.Where(or=>or.Num==order.Num).FirstAsync();
+            return db.Orders.Where(or=>or.Num==order.Num)
+            .Include(pr=>pr.Products)
+            .Include(po=>po.Postamat)
+            .Include(st=>st.Status).FirstAsync();
+            
             });
-            return ord;
+            
             
             
         }
