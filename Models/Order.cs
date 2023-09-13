@@ -10,10 +10,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using pp_test.Controllers;
 namespace pp_test;
 public class Order:IOrder{
 
+// PPTestContext _db;
+
+// public Order(ILogger<OrderController>? logger,PPTestContext context):base(logger,context){
+//     _db = context;
+// }
 //public Order(IStatus status,List<IProduct> listProduct,IPostamat postamat)=>(Status,Products,Postamat)=(status,listProduct,postamat);
 
 [Key]
@@ -34,4 +39,16 @@ public Postamat? Postamat{get;set;}
 public string? Telephone{get;set;}
 [Required]
 public string? FullName{get;set;}
-    }
+
+//    public override void Delete()
+//     {
+//         _db.Remove(this);
+//         _db.SaveChanges();
+       
+//     }
+
+//    public  IOrder Read()
+//     {
+//         return  this;
+//     }
+}
