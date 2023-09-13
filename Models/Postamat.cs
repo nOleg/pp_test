@@ -4,12 +4,12 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace pp_test{
-public class Postamat{
+namespace pp_test;
+public class Postamat:IPostamat{
 [Key]
-public string Num{get;set;}
+public string? Num{get;set;}
 
-public string Adress{get;set;}
+public string? Adress{get;set;}
 [Required]
-public bool Status{get;set;}
-}}
+public bool? Status{get;set;}=false;
+}

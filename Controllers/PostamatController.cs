@@ -14,32 +14,33 @@ using pp_test;
 namespace pp_test.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class PostamatController : ControllerBase
     {
-
-        PPTestContext db = new PPTestContext();
+ 
+        private readonly PPTestContext db;
         private readonly ILogger<OrderController> _logger;
 
-        public PostamatController(ILogger<OrderController> logger)
+        public PostamatController(ILogger<OrderController> logger,PPTestContext context)
         {
             _logger = logger;
+            db = context;
         }
 
      
-    [HttpGet("get")]
-        public async Task<Postamat> Get(string id)
+    [HttpGet]
+        public async Task<ActionResult<IPostamat>> GetPostamatById(string id)
         {
-            return await db.Postamats
+            return await db.Postamats!
                 .Where(or=>or.Num==id)
                 .FirstAsync();
         }
-    [HttpGet("all")]
-        public async Task<IEnumerable<Postamat>> Get()
+    [HttpGet]
+        public async Task<ActionResult<IEnumerable<IPostamat>>> GetAllPostamats()
         {
-            return await db.Postamats
+            return Ok(await db.Postamats!
             .Where(ps=>ps.Status==true)
-            .OrderBy(s=>s.Num).ToArrayAsync();
+            .OrderBy(s=>s.Num).ToArrayAsync());
                 
         }
 

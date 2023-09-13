@@ -7,16 +7,16 @@
 
 Исходники по адресу https://github.com/nOleg/pp_test
 
-Также поднят инстанс в Docker по адресу http://164.90.213.57:5000/
+Также поднят инстанс в Docker по адресу http://45.8.248.108
 
 Все заказы:
 curl --request GET \
-  --url http://164.90.213.57:5000/order/all \
+  --url http://45.8.248.108/order/all \
   --header 'Content-Type: application/json'
 
 Добавление заказа:
 curl --request POST \
-  --url http://164.90.213.57:5000/order/add \
+  --url http://45.8.248.108/order/add \
   --header 'Content-Type: application/json' \
   --data '
   {
@@ -40,16 +40,16 @@ curl --request POST \
 
 Удаление заказа:
 curl --request GET \
-  --url 'http://164.90.213.57:5000/order/delete?id=2'
+  --url 'http://45.8.248.108/order/delete?id=2'
 
 Все активные постаматы:
 curl --request GET \
-  --url http://164.90.213.57:5000/postamat/all \
+  --url http://45.8.248.108/postamat/all \
   --header 'Content-Type: application/json'
 
 Выбор постамата по номеру:
 curl --request GET \
-  --url 'http://164.90.213.57:5000/postamat/get?id=2233-112' \
+  --url 'http://45.8.248.108/postamat/get?id=2233-112' \
   --header 'Content-Type: application/json'
 
 

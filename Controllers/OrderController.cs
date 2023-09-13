@@ -16,61 +16,63 @@ using pp_test;
 namespace pp_test.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class OrderController : ControllerBase
     {
 
-        PPTestContext db = new PPTestContext();
+       internal readonly PPTestContext _db;
    
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(ILogger<OrderController> logger)
+        public OrderController(ILogger<OrderController> logger,PPTestContext context)
         {
             _logger = logger;
+            _db = context;
         }
 
 
-        [HttpPost("add")]
-        public  Task<Order> Post(Order order)
+        [HttpPost]
+        public  Task<ActionResult<IOrder>> AddOrder(Order order)
         {
-            if(!PhoneRegex(order.Telephone)){
+            if(!PhoneRegex(order!.Telephone!)){
                 throw new Exception("Неверный формат телефона.(+7XXX-XXX-XX-XX)");
             }
-            else if(!PostamatRegex(order.PostamaNum)){
+            else if(!PostamatRegex(order!.PostamaNum!)){
                 throw new Exception("Неверный формат ПОСТАМАТА.(XXXX-XXX)");
             }
-            else if(order.Products.Count>10){
+            else if(order!.Products!.Count>10){
                 throw new Exception("Кол-во товаров не должно превышать 10.");
             }
             
-            return Task.Run<Order>(()=>{
+            return Task.Run<ActionResult<IOrder>>(()=>{
             try{
-            db.Orders.Add(order);
-            db.SaveChanges();
+            _db.Orders!.Add(order);
+            _db.SaveChanges();
             }catch(Microsoft.EntityFrameworkCore.DbUpdateException ex){
-                throw new Exception($"Отсутствуе номер ПОСТАМАТА {order.PostamaNum}",ex);
+                throw new Exception($"Отсутствуе номер ПОСТАМАТА {order!.PostamaNum}",ex);
             }
-            return db.Orders.Where(or=>or.Num==order.Num)
+            return Ok(_db.Orders.Where(or=>or.Num==order!.Num)
             .Include(pr=>pr.Products)
             .Include(po=>po.Postamat)
-            .Include(st=>st.Status).FirstAsync();
+            .Include(st=>st.Status).FirstAsync());
             
             });
-            
-            
             
         }
 
 
 
-   [HttpGet("all")]
-        public async Task<IEnumerable<Order>> Post()
+   [HttpGet]
+        public async Task<IEnumerable<IOrder>> AllOrders()
         {
-            var order= await Task.Run<IEnumerable<Order>>(()=>db.Orders
+           // var order= 
+            return //await Task.Run<IEnumerable<IOrder>>(()=>
+            await _db.Orders!
             .Include(pr=>pr.Products)
             .Include(po=>po.Postamat)
-            .Include(st=>st.Status).ToList()) ;
-            return order;
+            .Include(st=>st.Status).ToListAsync();
+            //.ToList()) ;
+            //return order;
         }
 
        bool PhoneRegex(string phone){
@@ -103,18 +105,18 @@ namespace pp_test.Controllers
        }
     
 
-    [HttpGet("delete")]
-        public async Task<string> Delete(int id)
+    [HttpGet]
+        public async Task<ActionResult<string>> DeleteOrder(int id)
         {
             try{
-                var ord=await db.Orders
+                var ord=await _db.Orders!
                 .Where(or=>or.Num==id)
                 .Include(pr=>pr.Products)
                 .FirstAsync();
             
-                db.Orders.Remove(ord);
-                db.SaveChanges();
-                return "Заказ удален!";
+                _db.Orders!.Remove(ord);
+                _db.SaveChanges();
+                return  Ok("Заказ удален!");
             }catch(Exception ex){
                 return ex.Message;
             }

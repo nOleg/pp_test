@@ -8,12 +8,11 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace pp_test
-{
-public class Status{
+namespace pp_test;
+
+public class Status:IStatus{
 [Key]
-public int ID{get;set;}
+public int? ID{get;set;}
 //[Required]
-public string Name{get;set;}
-}
+public string? Name{get;set;}
 }

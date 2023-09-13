@@ -28,10 +28,14 @@ namespace pp_test
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // services.AddDbContext<PPTestContext>(options =>
-            //     options.UseSqlite(
-            //         Configuration.GetConnectionString("DefaultConnection")));
+             services.AddDbContext<PPTestContext>(options =>
+                 options.UseSqlite(
+                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllers();
+            
+            //services.AddSingleton<ILogger<PPTestContext>>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "pp_test", Version = "v1" });
