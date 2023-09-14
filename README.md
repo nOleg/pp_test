@@ -11,12 +11,12 @@
 
 Все заказы:
 curl --request GET \
-  --url http://45.8.248.108/order/all \
+   --url http://45.8.248.108/Order/AllOrders \
   --header 'Content-Type: application/json'
 
 Добавление заказа:
 curl --request POST \
-  --url http://45.8.248.108/order/add \
+  --url http://45.8.248.108/Order/AddOrder \
   --header 'Content-Type: application/json' \
   --data '
   {
@@ -40,21 +40,22 @@ curl --request POST \
 
 Удаление заказа:
 curl --request GET \
-  --url 'http://45.8.248.108/order/delete?id=2'
+  --url 'http://45.8.248.108/Order/DeleteOrder?id=2'
 
 Все активные постаматы:
 curl --request GET \
-  --url http://45.8.248.108/postamat/all \
+  --url http://45.8.248.108/Postamat/GetAllPostamats \
   --header 'Content-Type: application/json'
 
 Выбор постамата по номеру:
 curl --request GET \
-  --url 'http://45.8.248.108/postamat/get?id=2233-112' \
+  --url 'http://45.8.248.108/Postamat/GetPostamatById?id=2233-112' \
   --header 'Content-Type: application/json'
 
 
 Всё это на базе SQLite.
-Посмотрите и тогда 13 октября удалю инстанс и репозиторий. 
+
+
 
 
 
